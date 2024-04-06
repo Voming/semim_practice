@@ -49,15 +49,6 @@ public class JoinController extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/main");
 			return;
 		}
-		//회원가입 정상
-		response.sendRedirect(request.getContextPath()+"/join");
-		
-		
-		int checkIdResult = new MemberService().selectCheckId(memId);
-//		
-//		if(checkIdResult>0) {
-//			
-//		}
 		
 	}
 
