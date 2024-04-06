@@ -21,7 +21,7 @@ public class MemberDao {
 			pstmt.setString(1, memId);
 			rs = pstmt.executeQuery();
 			
-			if(rs !=null) {
+			if(rs.next()) {
 				result = rs.getInt(1);
 				System.out.println(result);
 			}
@@ -85,12 +85,16 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			// ? 처리
-			pstmt.setString(1, dto.getMemId());
-			pstmt.setString(2, dto.getMemPwd());
-			pstmt.setString(3, dto.getMemEmail());
-			System.out.println(result);
-			result = pstmt.executeUpdate();
+			
+			if(dto.getMemId() !=null&&dto.getMemPwd() !=null&dto.getMemEmail() !=null) {
+				// ? 처리
+				pstmt.setString(1, dto.getMemId());
+				pstmt.setString(2, dto.getMemPwd());
+				pstmt.setString(3, dto.getMemEmail());
+				
+				result = pstmt.executeUpdate();
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
