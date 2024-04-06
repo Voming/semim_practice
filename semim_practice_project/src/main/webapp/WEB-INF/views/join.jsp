@@ -44,12 +44,13 @@
 					cid : $("[name=id]").val(),
 					k1 : "v1",
 					k2 : "v2"
-				}
+				},
+				dataType: "json",   //json출력할때 안넣어주면 오류 발생
 				///////////// contentType 은 data의 자료형
 
 				///////////// dataType은 success의 result 의 자료형
 				//		,dataType : "json"
-				,
+				
 				success : function(result) {
 					console.log(result);
 					/* if (result > 0) {
@@ -62,12 +63,14 @@
 					console.log(typeof result);
 					//[ {},{}]
 					var htmlVal = '';
+					console.log(result);
 					$.each(result, function(){
 						console.log(this.memEmail);
 						// 백틱
 						htmlVal += '<div>'+this.memEmail+'</div>';
 					});
 					$(".member-list").html(htmlVal);
+					console.log(htmlVal);
 					 
 				},
 				error : function(request, status, error) {
