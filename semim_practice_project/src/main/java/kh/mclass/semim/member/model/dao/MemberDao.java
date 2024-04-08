@@ -9,8 +9,60 @@ import java.util.List;
 
 import static kh.mclass.jdbc.common.JdbcTemplate.close;
 import kh.mclass.semim.member.model.dto.MemberDto;
+import kh.mclass.semim.member.model.dto.MemberInfoDto;
+import kh.mclass.semim.member.model.dto.MemberLoginDto;
 
 public class MemberDao {
+	
+	public MemberInfoDto loginGetInfo(Connection conn, MemberLoginDto dto) {
+		MemberInfoDto result = null;
+		String sql = "SELECT MEM_ID, MEM_EMAIL FROM MEMBER WHERE MEM_ID=? AND MEM_PWD=?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getMemId());
+			pstmt.setString(2, dto.getMemPwd());
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = new MemberInfoDto(rs.getString(1), rs.getString(2));
+				System.out.println(result);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		close(rs);
+		close(pstmt);
+		System.out.println(result);
+		return result;
+	}
+	
+	
+	//로그인
+	public int login(Connection conn,MemberLoginDto dto) {
+		int result = 0;
+		String sql = "SELECT COUNT(*) FROM MEMBER WHERE MEM_ID=? AND MEM_PWD=?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getMemId());
+			pstmt.setString(1, dto.getMemPwd());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+				System.out.println(result);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		close(rs);
+		close(pstmt);
+		return result;
+	}
+	//회원가입 아이디 체크
 	public int selectCheckId(Connection conn, String memId) {
 		int result = 0;
 		String sql = "SELECT COUNT(*) FROM MEMBER WHERE MEM_ID=?";

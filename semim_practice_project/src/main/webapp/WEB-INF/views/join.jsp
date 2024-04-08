@@ -42,8 +42,6 @@
 				method : "post",
 				data : {
 					cid : $("[name=id]").val(),
-					k1 : "v1",
-					k2 : "v2"
 				},
 				dataType: "json",   //json출력할때 안넣어주면 오류 발생
 				///////////// contentType 은 data의 자료형
@@ -53,16 +51,16 @@
 				
 				success : function(result) {
 					console.log(result);
-					/* if (result > 0) {
+					if (result > 0) {
 						alert("사용불가!! 다른아이디를 사용해주세요.");
 					} else {
 						alert("사용가능");
-					} */
+					} 
 
 					
 					console.log(typeof result);
 					//[ {},{}]
-					var htmlVal = '';
+			 		/* var htmlVal = '';
 					console.log(result);
 					$.each(result, function(){
 						console.log(this.memEmail);
@@ -70,7 +68,7 @@
 						htmlVal += '<div>'+this.memEmail+'</div>';
 					});
 					$(".member-list").html(htmlVal);
-					console.log(htmlVal);
+					console.log(htmlVal); */
 					 
 				},
 				error : function(request, status, error) {
