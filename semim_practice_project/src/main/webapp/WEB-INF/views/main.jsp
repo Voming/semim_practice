@@ -8,8 +8,11 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 </head>
 <body>
-	<h1>semim main</h1>
+[[${loginInfo}]]
+[[<%session.getAttribute("loginInfo");%>]]
 
+	<h1>semim main</h1>
+<form id ="frm-logout">
 	<div>
 		<button class="btn join">회원가입</button>
 	</div>
@@ -17,11 +20,15 @@
 		<button class="btn login">로그인</button>
 	</div>
 	<div>
+		<button class="btn logout">로그아웃</button>
+	</div>
+	<div>
 		<button class="btn mypage">마이페이지</button>
 	</div>
 	<div>
 		<button class="btn board">게시판</button>
 	</div>
+</form>
 
 	<script>
 		$(loadedHandler);
@@ -29,6 +36,7 @@
 		function loadedHandler() {
 			$(".btn.join").on("click", btnJoinClickHandler);
 			$(".btn.login").on("click", btnLoginClickHandler);
+			$(".btn.logout").on("click", btnLogoutClickHandler);
 			$(".btn.mypage").on("click", btnMypageClickHandler);
 			$(".btn.board").on("click", btnBoardClickHandler);
 		}
@@ -38,6 +46,19 @@
 		}
 		function btnLoginClickHandler() {
 			location.href = "${pageContext.request.contextPath}/login";
+		}
+		function btnLogoutClickHandler() {
+			//get 방식으로 사용하지 않음
+			//location.href = "${pageContext.request.contextPath}/logout";
+			//
+			var frmlogout = document.getElementById("frm-logout");
+			frmlogout.action = "";
+			frmlogout.method ="";
+			frmlogout.submit();
+			
+			
+			
+			alert("로그아웃 되었습니다.");
 		}
 		function btnMypageClickHandler() {
 			location.href = "${pageContext.request.contextPath}/mypage";

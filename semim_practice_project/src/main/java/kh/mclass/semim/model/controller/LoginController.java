@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kh.mclass.semim.member.model.dto.MemberInfoDto;
+import kh.mclass.semim.member.model.dto.MemberLoginDto;
+import kh.mclass.semim.member.model.service.MemberService;
+
 /**
  * Servlet implementation class LoginController
  */
@@ -33,8 +37,24 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String id = request.getParameter("id");
+		String pwd= request.getParameter("pwd");
+		
+		MemberLoginDto dto = new MemberLoginDto(id, pwd);
+		System.out.println("MemberLoginDto" + dto);
+		
+		//TODO login
+		// 1 성공 0 실패
+		int result = 0;
+		MemberInfoDto resultInfo = new MemberService().loginGetInfo(dto);
+		
+		if(resultInfo != null) {
+			//성공
+			//request.getSession().setAttribute("loginId", id);
+			request.getSession().setAttribute("loginInfo", resultInfo);
+			result = 1;
+		}
+		response.getWriter().append(String.valueOf(result));
 	}
 
 }

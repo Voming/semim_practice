@@ -7,9 +7,27 @@ import java.util.List;
 
 import kh.mclass.semim.member.model.dao.MemberDao;
 import kh.mclass.semim.member.model.dto.MemberDto;
+import kh.mclass.semim.member.model.dto.MemberInfoDto;
+import kh.mclass.semim.member.model.dto.MemberLoginDto;
 
 public class MemberService {
 	private MemberDao dao = new MemberDao();
+	
+	public MemberInfoDto loginGetInfo(MemberLoginDto dto) {
+		MemberInfoDto result = null;
+		Connection conn = getSemimConnection(true);
+		result = dao.loginGetInfo(conn, dto);
+		close(conn);
+		return result;
+	}
+	
+	public int login(MemberLoginDto dto) {
+		int result = 0;
+		Connection conn = getSemimConnection(true);
+		result = dao.login(conn, dto);
+		close(conn);
+		return result;
+	}
 
 	public int selectCheckId(String memId) {
 		int result = 0;

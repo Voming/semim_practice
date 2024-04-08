@@ -27,17 +27,17 @@ public class CheckIdController extends HttpServlet {
 		System.out.println("#####checkid 진입");
 		String memid = request.getParameter("cid");
 		
-//		int result = new MemberService().selectCheckId(memid);
-//		System.out.println(result);
-//		response.getWriter().append(String.valueOf(result));
-		
-		List<MemberDto> result = new MemberService().selectAllList();
+		int result = new MemberService().selectCheckId(memid);
 		System.out.println(result);
-		Gson gson = new Gson();
-		String jsonResult = gson.toJson(result);
-		System.out.println("=== json===");
-		System.out.println(jsonResult);
-		response.getWriter().append(jsonResult);
+		response.getWriter().append(String.valueOf(result));
+		
+//		List<MemberDto> result = new MemberService().selectAllList();
+//		System.out.println(result);
+//		Gson gson = new Gson();
+//		String jsonResult = gson.toJson(result);
+//		System.out.println("=== json===");
+//		System.out.println(jsonResult);
+//		response.getWriter().append(jsonResult);
 	}
 
 }

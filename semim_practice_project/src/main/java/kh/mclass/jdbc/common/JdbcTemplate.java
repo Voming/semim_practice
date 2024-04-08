@@ -21,7 +21,7 @@ public class JdbcTemplate {
 			Class.forName(prop.getProperty("jdbc.driver"));
 			if(isLocalhost) {
 				conn = DriverManager.getConnection(prop.getProperty("jdbc.semim.localhost.url")
-						, prop.getProperty("jdbc.semim.sample")
+						, prop.getProperty("jdbc.semim.username")
 						, prop.getProperty("jdbc.semim.password"));
 			} else {
 				conn = DriverManager.getConnection(prop.getProperty("jdbc.semim.dbserver.url")	
