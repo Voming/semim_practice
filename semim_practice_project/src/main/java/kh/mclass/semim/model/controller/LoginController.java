@@ -42,8 +42,7 @@ public class LoginController extends HttpServlet {
 		
 		MemberLoginDto dto = new MemberLoginDto(id, pwd);
 		System.out.println("MemberLoginDto" + dto);
-		
-		//TODO login
+
 		// 1 성공 0 실패
 		int result = 0;
 		MemberInfoDto resultInfo = new MemberService().loginGetInfo(dto);
@@ -54,7 +53,7 @@ public class LoginController extends HttpServlet {
 			request.getSession().setAttribute("loginInfo", resultInfo);
 			result = 1;
 		}
-		response.getWriter().append(String.valueOf(result));
+		response.getWriter().append(String.valueOf(result)); //일반 form 태그로 접근시 이렇게 반환함
 	}
 
 }

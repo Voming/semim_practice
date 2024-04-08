@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<!-- 서버 응답 확인 프로세스 -->
 <h1>Ajax Javascript방식</h1>
 	<form action="${pageContext.request.contextPath}/join" method="post">
 		<div>
