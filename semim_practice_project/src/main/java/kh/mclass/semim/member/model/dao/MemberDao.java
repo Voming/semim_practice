@@ -22,11 +22,11 @@ public class MemberDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getMemId());
-			pstmt.setString(1, dto.getMemPwd());
+			pstmt.setString(2, dto.getMemPwd());
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				//result = rs.getInt(1);
+				result = new MemberInfoDto(rs.getString(1), rs.getString(2));
 				System.out.println(result);
 			}
 		} catch (Exception e) {
@@ -34,6 +34,7 @@ public class MemberDao {
 		}
 		close(rs);
 		close(pstmt);
+		System.out.println(result);
 		return result;
 	}
 	

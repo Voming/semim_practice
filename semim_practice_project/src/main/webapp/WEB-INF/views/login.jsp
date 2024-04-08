@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>semim login</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-s
 </head>
 <body>
 	<h1>semim login</h1>

@@ -17,6 +17,7 @@ public class MemberService {
 		MemberInfoDto result = null;
 		Connection conn = getSemimConnection(true);
 		result = dao.loginGetInfo(conn, dto);
+		System.out.println("서비스" + result);
 		close(conn);
 		return result;
 	}

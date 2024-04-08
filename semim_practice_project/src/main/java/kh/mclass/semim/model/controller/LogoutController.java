@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class LogoutController
  */
-@WebServlet("/LogoutController")
+@WebServlet("/logout")
 public class LogoutController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,8 @@ public class LogoutController extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("/logout dopost()");
 		request.getSession().removeAttribute("loginInfo");  // 선택한 것만 지워줘
-		//request.getSession().invalidate();  //contextPath 내부에서 걸어둔 모든 session attribute를 다 지워줘
+		//request.getSession().invalidate();  
+		//contextPath 내부에서 걸어둔 모든 session attribute를 모두 만료시킴
 		response.sendRedirect(request.getContextPath() + "/main");
 	}
 }
