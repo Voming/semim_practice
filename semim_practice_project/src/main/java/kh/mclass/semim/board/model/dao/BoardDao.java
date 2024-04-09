@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kh.mclass.semim.board.model.dto.BoardDto;
+import kh.mclass.semim.board.model.dto.BoardListDto;
 
 public class BoardDao {
-	public List<BoardDto> selectAllList(Connection conn) {
-		List<BoardDto> result = null;
+	public List<BoardListDto> selectAllList(Connection conn) {
+		List<BoardListDto> result = null;
 		String sql = "SELECT * FROM BOARD";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -22,10 +23,10 @@ public class BoardDao {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				result = new ArrayList<BoardDto>();
+				result = new ArrayList<BoardListDto>();
 				while (rs.next()) {
-					BoardDto dto = new BoardDto(rs.getInt("BOARD_ID"), rs.getString("SUBJECT"), rs.getString("CONTENT"),
-							rs.getString("WRITE_TIME"), rs.getString("LOG_IP"), rs.getString("BOARD_WRITER"),
+					BoardListDto dto = new BoardListDto(rs.getInt("BOARD_ID"), rs.getString("SUBJECT"),
+							rs.getString("WRITE_TIME"), rs.getString("BOARD_WRITER"),
 							rs.getInt("READ_COUNT"));
 					result.add(dto);
 				}

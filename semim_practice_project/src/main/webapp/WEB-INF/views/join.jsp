@@ -40,12 +40,10 @@
 			$.ajax({
 				url : "${pageContext.request.contextPath }/checkid",
 				method : "post",
-				data : {
+				data : { ///////////// contentType 은 data의 자료형
 					cid : $("[name=id]").val(),
 				},
 				dataType: "json",   //json출력할때 안넣어주면 오류 발생
-				///////////// contentType 은 data의 자료형
-
 				///////////// dataType은 success의 result 의 자료형
 				//		,dataType : "json"
 				

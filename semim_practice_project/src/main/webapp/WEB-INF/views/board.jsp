@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>semim board list</title>
 </head>
 <body>
-
+[[${dtolist}]]
+[[<%=request.getAttribute("dtolist") %>]]
 </body>
 </html>
