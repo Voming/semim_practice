@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>semim board write</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<jsp:include page="/WEB-INF/views/common/common_function.jsp"/>
 </head>
 <body>
 	<form id="frm-write">
@@ -28,9 +29,19 @@
 		}
 
 		function btnWriteClickHandler() {
+			/* 로그인 체크 */
+			if(	checkLogin("로그인이 되어야 글쓰기가 가능합니다", "write")){
+				return;
+			}else{
+				
+			} 
+			
+
+			
+			/* 글쓰기 */			
 			console.log($("[name=content]").val()); //textarea에 입력한 값을 나타냄
 			console.log($("[name=content]").val().trim().length);
-		  /*console.log($("[name=content]").html()); //이미 들어있는 값 나타냄
+		    /*console.log($("[name=content]").html()); //이미 들어있는 값 나타냄
 			console.log($("[name=content]").text()); //이미 들어있는 값 나타냄 */
 			
 			if($("[name=subject]").val().trim().length == 0 ){

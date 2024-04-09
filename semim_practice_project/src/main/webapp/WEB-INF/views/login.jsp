@@ -64,7 +64,14 @@
 					console.log(result);
 					if(result == 1){
 						alert("반갑습니다");
-						location.href = "${pageContext.request.contextPath}/main";
+						var prePage = "${prePage}";
+						
+						if(prePage == "write" ){
+							location.href = "${pageContext.request.contextPath}/board/write";
+						}else{
+							location.href = "${pageContext.request.contextPath}/main";
+						}
+						
 					}else{
 						alert("아이디와 비밀번호가 일치하지 않습니다.\n 다시 확인하고 로그인해주세요.");
 						$("[name=pwd]").val('');

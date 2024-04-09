@@ -9,12 +9,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kh.mclass.semim.board.model.dto.BoardInsertDto;
+import kh.mclass.semim.board.model.service.BoardService;
+import kh.mclass.semim.member.model.dto.MemberInfoDto;
+
 /**
  * Servlet implementation class BoardController
  */
 @WebServlet("/board/write")
 public class BoardWriteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private BoardService service = new BoardService();
 
     public BoardWriteController() {
         super();
@@ -25,6 +31,13 @@ public class BoardWriteController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String prePage = (String)request.getSession().getAttribute("prePage");
+		
+		
+		if(prePage != null && prePage.equals("write")) {
+			request.getSession().removeAttribute("prePage");
+		}
+		
 		request.getRequestDispatcher("/WEB-INF/views/boardwrite.jsp").forward(request, response);
 	}
 
@@ -34,8 +47,13 @@ public class BoardWriteController extends HttpServlet {
 		
 		String subject = request.getParameter("subject");
 		String content = request.getParameter("content");
+		MemberInfoDto boardWriter = (MemberInfoDto)request.getSession().getAttribute("loginInfo");
+		
 		System.out.println(subject);
 		System.out.println(content);
+		BoardInsertDto dto = new BoardInsertDto(subject, content, boardWriter.getMemId());
+		int result = service.insert(dto);
+		response.sendRedirect(request.getContextPath()+"/board/list");
 	}
 
 }

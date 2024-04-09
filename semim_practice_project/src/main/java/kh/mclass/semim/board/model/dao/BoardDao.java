@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kh.mclass.semim.board.model.dto.BoardDto;
+import kh.mclass.semim.board.model.dto.BoardInsertDto;
 import kh.mclass.semim.board.model.dto.BoardListDto;
 
 public class BoardDao {
@@ -67,7 +68,7 @@ public class BoardDao {
 			return result;
 		}
 		// insert
-		public int insert(Connection conn, BoardDto dto) {
+		public int insert(Connection conn, BoardInsertDto dto) {
 			int result = 0;
 //			INSERT INTO BOARD VALUES (SEQ_BOARD_ID.nextval, '제목1', '내용1', default, '127.0.0.1', 'kh1', default);
 			String sql = "INSERT INTO MEMBER (BOARD_ID,SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT)"
@@ -78,7 +79,7 @@ public class BoardDao {
 				// ? 처리
 				pstmt.setString(1, dto.getSubject());
 				pstmt.setString(2, dto.getContent());
-				pstmt.setString(3, dto.getLogIp());
+				pstmt.setString(3, null);
 				pstmt.setString(4, dto.getBoardWriter());
 				result = pstmt.executeUpdate();
 			} catch (SQLException e) {

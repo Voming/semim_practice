@@ -9,26 +9,27 @@ public class BoardInsertDto {
 //	BOARD_WRITER NOT NULL VARCHAR2(20)   
 //	READ_COUNT   NOT NULL NUMBER
 
-	private Integer boardId;
 	private String subject;
+	private String content;
 	private String boardWriter;
-	public BoardInsertDto(Integer boardId, String subject, String boardWriter) {
-		super();
-		this.boardId = boardId;
-		this.subject = subject;
-		this.boardWriter = boardWriter;
-	}
 	@Override
 	public String toString() {
-		return "BoardInsertDto [boardId=" + boardId + ", subject=" + subject + ", boardWriter=" + boardWriter + "]";
+		return "BoardInsertDto [subject=" + subject + ", content=" + content + ", boardWriter=" + boardWriter + "]";
 	}
-	public Integer getBoardId() {
-		return boardId;
+	public BoardInsertDto(String subject, String content, String boardWriter) {
+		super();
+		this.subject = subject;
+		this.content = content;
+		this.boardWriter = boardWriter;
 	}
 	public String getSubject() {
 		return subject;
 	}
+	public String getContent() {
+		return content;
+	}
 	public String getBoardWriter() {
 		return boardWriter;
 	}
+
 }
