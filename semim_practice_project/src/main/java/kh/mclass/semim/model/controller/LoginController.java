@@ -32,7 +32,9 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//글쓰기 하려다가 로그인이 되어있지 않다면 prePage 값을 가지고 로그인 페이지로 이동했을 거임
 		String prePage = request.getParameter("prePage");
+		//session에 prePage값 넣어서 다시 전달
 		request.getSession().setAttribute("prePage", prePage);
 		request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
 	}
@@ -49,8 +51,8 @@ public class LoginController extends HttpServlet {
 
 		// 1 성공 0 실패
 		int result = 0;
-		MemberInfoDto resultInfo = service.loginGetInfo(dto);
-		
+		MemberInfoDto resultInfo = service.loginGetInfo(dto);   //회원정보를 저장하기 위해 MemberInfoDto에 담음
+		//아이디와 비번이 일치하는 회원을 찾아 있다면 로그인 성공으로 간주, session에 로그인 정보 저장
 		if(resultInfo != null) {
 			//성공
 			//request.getSession().setAttribute("loginId", id);

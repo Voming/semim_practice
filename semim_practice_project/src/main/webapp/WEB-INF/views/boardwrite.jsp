@@ -30,13 +30,12 @@
 
 		function btnWriteClickHandler() {
 			/* 로그인 체크 */
+			/* <jsp:include page="/WEB-INF/views/common/common_function.jsp"/> 를 통해 checkLogin 함수 불러옴 */
 			if(	checkLogin("로그인이 되어야 글쓰기가 가능합니다", "write")){
 				return;
 			}else{
 				
 			} 
-			
-
 			
 			/* 글쓰기 */			
 			console.log($("[name=content]").val()); //textarea에 입력한 값을 나타냄
@@ -56,7 +55,7 @@
 			var frm = document.getElementById("frm-write");
 			frm.method = "post"; //content길이가 길 예정 한글 3, 영문자 1 바이트
 			frm.action = "${pageContext.request.contextPath}/board/write";
-			frm.submit();
+			frm.submit();  //값을 보내야 controller에서 인식함
 		}
 	</script>
 </body>

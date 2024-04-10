@@ -25,12 +25,15 @@ public class BoardDao {
 
 			if (rs.next()) {
 				result = new ArrayList<BoardListDto>();
-				while (rs.next()) {
-					BoardListDto dto = new BoardListDto(rs.getInt("BOARD_ID"), rs.getString("SUBJECT"),
-							rs.getString("WRITE_TIME"), rs.getString("BOARD_WRITER"),
-							rs.getInt("READ_COUNT"));
+				System.out.println("여기");
+				do { //위에서 이미 rs.next()를 했기 때문에 do-while문을 사용해야함
+					BoardListDto dto = new BoardListDto(	
+							rs.getInt("BOARD_ID"),rs.getString("SUBJECT"),
+							rs.getString("WRITE_TIME"),rs.getString("BOARD_WRITER"),
+							rs.getInt("READ_COUNT")
+							);
 					result.add(dto);
-				}
+				}while (rs.next());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,7 +74,7 @@ public class BoardDao {
 		public int insert(Connection conn, BoardInsertDto dto) {
 			int result = 0;
 //			INSERT INTO BOARD VALUES (SEQ_BOARD_ID.nextval, '제목1', '내용1', default, '127.0.0.1', 'kh1', default);
-			String sql = "INSERT INTO MEMBER (BOARD_ID,SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT)"
+			String sql = "INSERT INTO BOARD (BOARD_ID,SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT)"
 					+ " VALUES (SEQ_BOARD_ID.nextval, ?, ?, default, ?, ?, default)";
 			PreparedStatement pstmt = null;
 			try {

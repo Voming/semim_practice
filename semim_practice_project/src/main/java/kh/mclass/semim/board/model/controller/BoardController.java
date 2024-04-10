@@ -33,7 +33,7 @@ public class BoardController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 //		List<BoardListDto> dtolist = new BoardService().selectAllList();  //메소드 안에서 new를 하지 않음, DTO는 가능
-		request.setAttribute("dtolist",  service.selectAllList());
+		request.setAttribute("dtolist",  service.selectAllList());  //board에 있는 전체 리스트 출력
 		
 		request.getRequestDispatcher("/WEB-INF/views/board.jsp").forward(request, response);
 	}

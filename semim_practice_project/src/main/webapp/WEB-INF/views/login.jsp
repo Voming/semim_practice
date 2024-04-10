@@ -66,6 +66,7 @@
 						alert("반갑습니다");
 						var prePage = "${prePage}";
 						
+						//만약 prePage가 write면 글쓰기 하려다가 로그인 안되어있어 하게 된 것 -> 다시 글쓰기로 이동
 						if(prePage == "write" ){
 							location.href = "${pageContext.request.contextPath}/board/write";
 						}else{

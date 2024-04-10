@@ -47,7 +47,7 @@
 				///////////// dataType은 success의 result 의 자료형
 				//		,dataType : "json"
 				
-				success : function(result) {
+				success : function(result) {  //checkid에서 처리 후 받은 결과값
 					console.log(result);
 					if (result > 0) {
 						alert("사용불가!! 다른아이디를 사용해주세요.");
@@ -57,7 +57,7 @@
 
 					
 					console.log(typeof result);
-					//[ {},{}]
+					//[ {},{}]  //모든 멤버 조회
 			 		/* var htmlVal = '';
 					console.log(result);
 					$.each(result, function(){
