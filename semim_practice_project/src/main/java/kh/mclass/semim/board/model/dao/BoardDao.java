@@ -14,9 +14,61 @@ import kh.mclass.semim.board.model.dto.BoardInsertDto;
 import kh.mclass.semim.board.model.dto.BoardListDto;
 
 public class BoardDao {
+	//select total count
+	public int selectTotalCount(Connection conn) {
+		int result = 0;
+		String sql = "select count(*) from board";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		close(rs);
+		close(pstmt);
+		return result;
+	}
+	
+	// select list - page
+	public List<BoardListDto> selectPageList(Connection conn, int start, int end) {
+		List<BoardListDto> result = null;
+		String sql = "SELECT * FROM BOARD ORDER BY BOARD_ID DESC";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = new ArrayList<BoardListDto>();
+				System.out.println("여기");
+				do { //위에서 이미 rs.next()를 했기 때문에 do-while문을 사용해야함
+					BoardListDto dto = new BoardListDto(	
+							rs.getInt("BOARD_ID"),rs.getString("SUBJECT"),
+							rs.getString("WRITE_TIME"),rs.getString("BOARD_WRITER"),
+							rs.getInt("READ_COUNT")
+							);
+					result.add(dto);
+				}while (rs.next());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		close(rs);
+		close(pstmt);
+
+		return result;
+	}
+	
+	
 	public List<BoardListDto> selectAllList(Connection conn) {
 		List<BoardListDto> result = null;
-		String sql = "SELECT * FROM BOARD";
+		String sql = "SELECT * FROM BOARD ORDER BY BOARD_ID DESC";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {

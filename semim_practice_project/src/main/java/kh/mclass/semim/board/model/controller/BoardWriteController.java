@@ -40,7 +40,7 @@ public class BoardWriteController extends HttpServlet {
 			request.getSession().removeAttribute("prePage"); 
 		}
 		
-		request.getRequestDispatcher("/WEB-INF/views/boardwrite.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/board/boardwrite.jsp").forward(request, response);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class BoardWriteController extends HttpServlet {
 		System.out.println(content);
 		BoardInsertDto dto = new BoardInsertDto(subject, content, boardWriter.getMemId());
 		int result = service.insert(dto);
-		if(result > 0) 	System.out.println();
+		
 		response.sendRedirect(request.getContextPath()+"/board/list");
 	}
 
