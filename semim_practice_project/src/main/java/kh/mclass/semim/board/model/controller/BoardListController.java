@@ -38,7 +38,7 @@ public class BoardListController extends HttpServlet {
 		//현제 페이지
 		int currentPageNum = 1;  //기본 1
 		String pageNum = request.getParameter("page");
-		if(pageNum != null && pageNum.equals("")) {
+		if(pageNum != null && !pageNum.equals("")) {
 			try {
 				currentPageNum = Integer.parseInt(pageNum);
 			} catch (NumberFormatException e) {
@@ -51,7 +51,7 @@ public class BoardListController extends HttpServlet {
 		request.setAttribute("map", service.selectPageList(pageSize, pageBlockSize, currentPageNum));
 	
 		
-		request.getRequestDispatcher("/WEB-INF/views/board/boardlist.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/board/list.jsp").forward(request, response);
 	}
 
 	/**

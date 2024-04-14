@@ -27,18 +27,18 @@ public class CheckIdController extends HttpServlet {
 		System.out.println("#####checkid 진입");  //ajax로 들어옴
 		String memid = request.getParameter("cid"); //data로 전달 받음
 		
-		int result = new MemberService().selectCheckId(memid);
-		System.out.println(result);
-		response.getWriter().append(String.valueOf(result));  //결과 불렀던 ajax로 반환
+//		int result = new MemberService().selectCheckId(memid);
+//		System.out.println(result);
+//		response.getWriter().append(String.valueOf(result));  //결과 불렀던 ajax로 반환
 		
 		//모든 멤버조회
-//		List<MemberDto> result = new MemberService().selectAllList();
-//		System.out.println(result);
-//		Gson gson = new Gson();
-//		String jsonResult = gson.toJson(result);  //result는 원래 MemberDto형태였다가 json으로 파싱
-//		System.out.println("=== json===");
-//		System.out.println(jsonResult);
-//		response.getWriter().append(jsonResult);
+		List<MemberDto> result = new MemberService().selectAllList();
+		System.out.println(result);
+		Gson gson = new Gson();
+		String jsonResult = gson.toJson(result);  //result는 원래 MemberDto형태였다가 json으로 파싱
+		System.out.println("=== json===");
+		System.out.println(jsonResult);
+		response.getWriter().append(jsonResult);
 	}
 
 }

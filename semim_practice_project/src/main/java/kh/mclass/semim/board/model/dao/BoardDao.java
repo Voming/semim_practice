@@ -37,16 +37,23 @@ public class BoardDao {
 	// select list - page
 	public List<BoardListDto> selectPageList(Connection conn, int start, int end) {
 		List<BoardListDto> result = null;
-		String sql = "SELECT * FROM BOARD ORDER BY BOARD_ID DESC";
+		String sql = "select t2.*"
+				+"   from (select t1.*, rownum rn" 
+			    +"       from (SELECT BOARD_ID, SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT    FROM BOARD order by board_id desc) t1 ) t2"
+			    +"   where rn between ?   and ?"
+			    ;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, start);//한페이지당글수*(현재페이지-1)+1
+			pstmt.setInt(2, end);//한페이지당글수*(현재페이지)
+			
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				result = new ArrayList<BoardListDto>();
-				System.out.println("여기");
+				
 				do { //위에서 이미 rs.next()를 했기 때문에 do-while문을 사용해야함
 					BoardListDto dto = new BoardListDto(	
 							rs.getInt("BOARD_ID"),rs.getString("SUBJECT"),
@@ -120,6 +127,7 @@ public class BoardDao {
 			}
 			close(rs);
 			close(pstmt);
+			System.out.println(result);
 			return result;
 		}
 		// insert

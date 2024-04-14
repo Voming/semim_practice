@@ -40,7 +40,7 @@ public class BoardWriteController extends HttpServlet {
 			request.getSession().removeAttribute("prePage"); 
 		}
 		
-		request.getRequestDispatcher("/WEB-INF/views/board/boardwrite.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/board/write.jsp").forward(request, response);
 	}
 
 	@Override

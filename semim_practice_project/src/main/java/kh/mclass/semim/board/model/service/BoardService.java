@@ -3,6 +3,7 @@ package kh.mclass.semim.board.model.service;
 import static kh.mclass.jdbc.common.JdbcTemplate.*;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class BoardService {
 	public Map<String, Object> selectPageList(int pageSize, int pageBlockSize, int currentPageNum) {
 		Map<String, Object> result = null;
 		
-		Connection conn = getSemimConnection(true);
+		Connection conn = getSemimConnection(false);
 		System.out.println("currentPageNum : " + currentPageNum);
 		int start = pageSize*(currentPageNum-1)+1; //해당 페이지에서 보이는 가장 첫 번호
 		int end = pageSize*currentPageNum; 
@@ -38,10 +39,22 @@ public class BoardService {
 		//아래 페이지 번호 첫번쨰 = (현재페이지%하단에 나타날 페이지 수 == 0) ? ((현재페이지/하단에 나타날 페이지 수)-1)*페이지수 + 1  :((현재페이지/하단에 나타날 페이지 수))*페이지수 + 1
 		//현재 페이지가 하단에 나타날 페이지수로 떨어지면 ->나타낼 페이지 수의 배수  (((int)(현재 위치/나타낼 페이지 수)-1)*나타낼 페이지 수+1  ex) 5면 1, 10이
 		// 나누어 떨어지지 않으면 ((int)현재위치 / 나타낼 페이지 수)*나타낼 페이지 수 + 1 ex) 1이면 1, 7이면 6
-		int startPageNum = (currentPageNum%pageBlockSize == 0)?((currentPageNum/pageBlockSize)-1)*pageBlockSize+1 : (currentPageNum/pageBlockSize)*pageBlockSize +1;
+		int startPageNum = (currentPageNum%pageBlockSize == 0) ? ((currentPageNum/pageBlockSize)-1)*pageBlockSize + 1  :((currentPageNum/pageBlockSize))*pageBlockSize + 1;
 		//끝페이지  = (페이지 번호 첫번째 + 페이지 크기 > 전체페이지수) ? 전체페이지수 : startPageNum+페이지수 - 1;
-		int endPageNum = 
-	
+		int endPageNum = (startPageNum+pageBlockSize > totalPageCount) ? totalPageCount : startPageNum+pageBlockSize-1;
+		System.out.println("startPageNum : " + startPageNum);
+		System.out.println("endPageNum : " + endPageNum);
+		
+		List<BoardListDto> dtolist = dao.selectPageList(conn, start, end); //보이는 부분만 값을 가져옴 보이는 첫번째, 마지막 리스트 번호
+		close(conn);
+		
+		result = new HashMap<String, Object>();
+		result.put("dtolist", dtolist);
+		result.put("totalPageCount", totalPageCount);
+		result.put("startPageNum", startPageNum);
+		result.put("endPageNum", endPageNum);
+		result.put("currentPageNum", currentPageNum);
+		System.out.println("selectPageList() : "+result);
 		return result;
 	}
 	
@@ -49,7 +62,7 @@ public class BoardService {
 	// select list - all
 	public List<BoardListDto> selectAllList() {
 		List<BoardListDto> result = null;
-		Connection conn = getSemimConnection(true);
+		Connection conn = getSemimConnection(false);
 		result = dao.selectAllList(conn);
 		close(conn);
 		return result;
@@ -57,7 +70,7 @@ public class BoardService {
 	// select one
 	public BoardDto selectOne(Integer boardId) {
 		BoardDto result = null;
-		Connection conn = getSemimConnection(true);
+		Connection conn = getSemimConnection(false);
 		result = dao.selectOne(conn, boardId);
 		close(conn);
 		return result;
@@ -65,7 +78,7 @@ public class BoardService {
 	// insert
 	public int insert(BoardInsertDto dto) {
 		int result = 0;
-		Connection conn = getSemimConnection(true);
+		Connection conn = getSemimConnection(false);
 		result = dao.insert(conn, dto);
 		close(conn);
 		return result;
@@ -73,7 +86,7 @@ public class BoardService {
 	// update
 	public int update(BoardDto dto) {
 		int result = 0;
-		Connection conn = getSemimConnection(true);
+		Connection conn = getSemimConnection(false);
 		result = dao.update(conn, dto);
 		close(conn);
 		return result;
@@ -81,7 +94,7 @@ public class BoardService {
 	// delete
 	public int delete(Integer boardId) {
 		int result = 0;
-		Connection conn = null;
+		Connection conn = getSemimConnection(false);
 		result = dao.delete(conn, boardId);
 		close(conn);
 		return result;
