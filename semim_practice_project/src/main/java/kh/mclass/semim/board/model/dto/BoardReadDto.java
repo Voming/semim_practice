@@ -2,7 +2,7 @@ package kh.mclass.semim.board.model.dto;
 
 import java.util.List;
 
-public class BoardDto {
+public class BoardReadDto {
 //	BOARD_ID     NOT NULL NUMBER         
 //	SUBJECT      NOT NULL VARCHAR2(120)  
 //	CONTENT      NOT NULL VARCHAR2(4000) 
@@ -17,21 +17,23 @@ public class BoardDto {
 	private String logIp;
 	private String boardWriter;
 	private Integer readCount;
+	private List<BoardReplyListDto> replydtolist;
 	
-	
+
 	@Override
 	public String toString() {
-		return "BoardDto [boardId=" + boardId + ", subject=" + subject + ", content=" + content + ", writeTime="
-				+ writeTime + ", logIp=" + logIp + ", boardWriter=" + boardWriter + ", readCount=" + readCount + "]";
+		return "BoardReadDto [boardId=" + boardId + ", subject=" + subject + ", content=" + content + ", writeTime="
+				+ writeTime + ", logIp=" + logIp + ", boardWriter=" + boardWriter + ", readCount=" + readCount
+				+ ", replydtolist=" + replydtolist + "]";
 	}
-	public BoardDto() {
-		super();
-	}
-	public BoardDto(Integer boardId, String subject, String content, String writeTime, String logIp, String boardWriter,
+	public BoardReadDto(Integer boardId, String subject, String content, String writeTime, String logIp, String boardWriter,
 			Integer readCount) {
 		super();
 		this.boardId = boardId;
 		this.subject = subject;
+		// 줄바꾸기, 띄워쓰기를 HTML 태그로 변경
+		content = content.replaceAll("\\r?\\n", "<br>");
+		content = content.replaceAll(" ", "&nbsp;");
 		this.content = content;
 		this.writeTime = writeTime;
 		this.logIp = logIp;
@@ -41,44 +43,30 @@ public class BoardDto {
 	public Integer getBoardId() {
 		return boardId;
 	}
-	public void setBoardId(Integer boardId) {
-		this.boardId = boardId;
-	}
 	public String getSubject() {
 		return subject;
-	}
-	public void setSubject(String subject) {
-		this.subject = subject;
 	}
 	public String getContent() {
 		return content;
 	}
-	public void setContent(String content) {
-		this.content = content;
-	}
 	public String getWriteTime() {
 		return writeTime;
-	}
-	public void setWriteTime(String writeTime) {
-		this.writeTime = writeTime;
 	}
 	public String getLogIp() {
 		return logIp;
 	}
-	public void setLogIp(String logIp) {
-		this.logIp = logIp;
-	}
 	public String getBoardWriter() {
 		return boardWriter;
-	}
-	public void setBoardWriter(String boardWriter) {
-		this.boardWriter = boardWriter;
 	}
 	public Integer getReadCount() {
 		return readCount;
 	}
-	public void setReadCount(Integer readCount) {
-		this.readCount = readCount;
+	public List<BoardReplyListDto> getReplydtolist() {
+		return replydtolist;
 	}
+	public void setReplydtolist(List<BoardReplyListDto> replydtolist) {
+		this.replydtolist = replydtolist;
+	}
+	
 	
 }

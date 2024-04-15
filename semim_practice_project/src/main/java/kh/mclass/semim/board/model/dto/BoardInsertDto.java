@@ -8,9 +8,9 @@ public class BoardInsertDto {
 //	LOG_IP                VARCHAR2(15)   
 //	BOARD_WRITER NOT NULL VARCHAR2(20)   
 //	READ_COUNT   NOT NULL NUMBER
-
 	private String subject;
 	private String content;
+	//private String logIp;
 	private String boardWriter;
 	@Override
 	public String toString() {

@@ -3,7 +3,7 @@ package kh.mclass.semim.board.model.dto;
 import java.util.List;
 
 public class BoardListDto {
-//	BOARD_ID     NOT NULL NUMBER         
+//	BOARD_ID     NOT NULL NUMBER
 //	SUBJECT      NOT NULL VARCHAR2(120)  
 //	CONTENT      NOT NULL VARCHAR2(4000) 
 //	WRITE_TIME   NOT NULL TIMESTAMP(6)   
@@ -15,8 +15,11 @@ public class BoardListDto {
 	private String writeTime;  // TIMESTAMP
 	private String boardWriter;
 	private Integer readCount;
-	
-	
+	@Override
+	public String toString() {
+		return "BoardListDto [boardId=" + boardId + ", subject=" + subject + ", writeTime=" + writeTime
+				+ ", boardWriter=" + boardWriter + ", readCount=" + readCount + "]";
+	}
 	public BoardListDto(Integer boardId, String subject, String writeTime, String boardWriter, Integer readCount) {
 		super();
 		this.boardId = boardId;
@@ -24,11 +27,6 @@ public class BoardListDto {
 		this.writeTime = writeTime;
 		this.boardWriter = boardWriter;
 		this.readCount = readCount;
-	}
-	@Override
-	public String toString() {
-		return "BoardListDto [boardId=" + boardId + ", subject=" + subject + ", writeTime=" + writeTime
-				+ ", boardWriter=" + boardWriter + ", readCount=" + readCount + "]";
 	}
 	public Integer getBoardId() {
 		return boardId;
@@ -45,4 +43,7 @@ public class BoardListDto {
 	public Integer getReadCount() {
 		return readCount;
 	}
+	
+	
+	
 }

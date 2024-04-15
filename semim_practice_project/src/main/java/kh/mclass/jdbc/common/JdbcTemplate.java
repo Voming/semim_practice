@@ -70,7 +70,7 @@ public class JdbcTemplate {
 		}
 	}
 
-	public static void Commit(Connection con) {
+	public static void commit(Connection con) {
 		try {
 			if (con != null)
 				con.commit();
@@ -79,7 +79,7 @@ public class JdbcTemplate {
 		}
 	}
 
-	public static void Rollback(Connection con) {
+	public static void rollback(Connection con) {
 		try {
 			if (con != null)
 				con.rollback();
