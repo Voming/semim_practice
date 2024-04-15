@@ -28,7 +28,7 @@ public class BoardService {
 //	}
 	
 	
-	// select list - all
+	// 게시물 페이지 필요한만큼 가져오기 select list - all
 	public Map<String, Object> selectPageList(int pageSize, int pageBlockSize, int currentPageNum) {
 		Map<String, Object> result = null;
 		
@@ -68,7 +68,7 @@ public class BoardService {
 	}
 	
 	
-	// select list - board reply
+	// 게시글 댓글 전체 가져오기select list - board reply
 	public List<BoardReplyListDto> selectBoardReplyList(Integer boardId) {
 		List<BoardReplyListDto> result = null;
 		Connection conn = getSemimConnection(true);
@@ -77,7 +77,7 @@ public class BoardService {
 		return result;
 	}
 	
-	// select list - all
+	// 게시판 전체 글 조회 select list - all
 	public List<BoardListDto> selectAllList() {
 		List<BoardListDto> result = null;
 		Connection conn = getSemimConnection(true);
@@ -85,7 +85,7 @@ public class BoardService {
 		close(conn);
 		return result;
 	}
-	// select one
+	//게시글 하나의 전체 정보(기본+ 댓글전체) select one
 	public BoardReadDto selectOne(Integer boardId) {
 		BoardReadDto result = null;
 		Connection conn = getSemimConnection(true);
@@ -93,22 +93,22 @@ public class BoardService {
 		if(result != null) {
 			dao.updateReadCount(conn, boardId);
 		}
-		List<BoardReplyListDto> replylist = dao.selectBoardReplyList(conn, boardId);	
-		result.setReplydtolist(replylist);
+		List<BoardReplyListDto> replylist = dao.selectBoardReplyList(conn, boardId);
+		result.setReplydtolist(replylist);  //게시글 기본 정보와 댓글들 모두 담아서 전달
 		close(conn);
 		return result;
 	}
 	
 	
 	
-	// insert - boardreply
+	// 댓글 추가하기 insert - boardreply
 	public int insertReply(BoardReplyWriteDto dto) {
 		int result = 0;
 		int resultupdate = 0;
 		Connection conn = getSemimConnection(true);
-		autoCommit(conn, false);
-		if(dto.getBoardReplyId() != 0) {
-			resultupdate = dao.updateReplyStep(conn, dto.getBoardReplyId());
+		autoCommit(conn, false);  //커밋 자동으로 안되게 설정
+		if(dto.getBoardReplyId() != 0) {  //ReplyId가 없으면 그냥 댓글 있으면 대댓글
+			resultupdate = dao.updateReplyStep(conn, dto.getBoardReplyId());  //위치 조절하기위해서 update
 			if(resultupdate > -1) {
 				result = dao.insertRReply(conn, dto);
 			}

@@ -63,7 +63,7 @@
 </head>
 <body>
 	<h1>Semim Board Write</h1>
-	<div class="board grid">
+	<div class="board grid"> <!-- BoardReadDto사용, dto에 담겨있는 기본정보 -->
 		<div class="flex">
 			<div>${dto.boardId }</div>
 			<div>${dto.boardWriter }</div>
@@ -86,7 +86,7 @@
 				</div>
 			</form>
 		</div>
-		<div class="reply-wrap">
+		<div class="reply-wrap"> <!-- dto에 담겨있는 댓글 정보 -->
 			<c:forEach items="${dto.replydtolist }" var="replydto">
 				<form class="frm-rreply">
 					<input type="hidden" name="boardId" value="${dto.boardId }">
@@ -150,7 +150,7 @@ function btnRReplyClickHandler(){
 				alert("댓글 등록에 실패했습니다. 다시 시도해주세요.");
 				return;
 			}
-			displayReplyWrap(result);
+			displayReplyWrap(result);  /* 가져온 리스트 다시 묶어서 뿌리기위해 함수 호출 */
 		}
 	});
 }
@@ -190,7 +190,7 @@ function btnReplyClickHandler(){
 function displayReplyWrap(datalist){
 	console.log("${dto.boardId }");
 	var htmlVal = '';
-	for(var idx in datalist){
+	for(var idx in datalist){   // 가져온 댓글 리스트 수만큼 반복(처음부터 다시 만드는거)
 		var replydto = datalist[idx];
 		htmlVal += `
 		<form class="frm-rreply">
@@ -234,8 +234,10 @@ function btnRReplyContentClickHandler(){
 	//$(".boardreply.grid .rreplycontent.span").show();
 	//$(this).parent().next().show();
 	$(this).parent().next().toggle();
-
-	
+	/* <div class="rreplycontent span">
+	<input type="text" name="boardReplyContent">
+	<button type="button" class="btn rreply">등록</button>
+	</div> 이 내용이 토글로 나옴*/ 
 }
 </script>
 </html>

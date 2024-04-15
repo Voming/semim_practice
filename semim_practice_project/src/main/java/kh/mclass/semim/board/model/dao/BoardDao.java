@@ -18,9 +18,10 @@ import kh.mclass.semim.board.model.dto.BoardReplyWriteDto;
 
 public class BoardDao {
 	
-	// select list - board reply : board_id
+	// 댓글 리스트 전채 가져오기(id구분) select list - board reply : board_id 
 	public List<BoardReplyListDto> selectBoardReplyList(Connection conn, Integer boardId) {
 		List<BoardReplyListDto> result = null;
+		//순서를 정해서 리스트를 넘겨줌
 		String sql = "select BOARD_REPLY_ID,  BOARD_REPLY_WRITER,BOARD_REPLY_CONTENT, "
 				+ " BOARD_REPLY_WRITE_TIME, "
 				+ " BOARD_REPLY_LEVEL,BOARD_REPLY_REF, BOARD_REPLY_STEP "
@@ -53,7 +54,7 @@ public class BoardDao {
 	}
 	
 	
-	// select total Count
+	// 게시글 전체 개수 select total Count
 	public int selectTotalCount(Connection conn) {
 		int result = 0;
 		String sql = "select count(*) cnt from board";
@@ -74,7 +75,7 @@ public class BoardDao {
 		close(pstmt);
 		return result;
 	}
-	// select list - all
+	// 게시글 리스트 필요한 만큼 조회 select list - all
 	public List<BoardListDto> selectPageList(Connection conn, int start, int end) {
 		List<BoardListDto> result = null;
 		String sql = "select t2.*"
@@ -110,7 +111,7 @@ public class BoardDao {
 		return result;
 	}
 	
-	// select list - all
+	// 전체 리스트 조회 select list - all
 	public List<BoardListDto> selectAllList(Connection conn) {
 		List<BoardListDto> result = null;
 		String sql = "SELECT BOARD_ID, SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT    FROM BOARD";
@@ -139,7 +140,7 @@ public class BoardDao {
 		close(pstmt);
 		return result;
 	}
-	// select one
+	// 아이디로 조회해서 게시글 전체 정보 가져옴 select one
 	public BoardReadDto selectOne(Connection conn, Integer boardId) {
 		BoardReadDto result = null;
 		String sql = "SELECT BOARD_ID,SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT    FROM BOARD WHERE BOARD_ID=?";
@@ -166,7 +167,7 @@ public class BoardDao {
 		return result;
 	}
 	
-	// select 
+	// 게시글 추가할때 아이디 자동 증가 select 
 	public int getSequenceNum(Connection conn) {
 		int result = 0;
 		String sql = "SELECT SEQ_BOARD_ID.nextval FROM DUAL";
@@ -203,9 +204,9 @@ public class BoardDao {
 			pstmt.setInt(1, dto.getBoardId());
 			pstmt.setString(2, dto.getBoardReplyWriter());
 			pstmt.setString(3, dto.getBoardReplyContent());
-			pstmt.setInt(4, dto.getBoardReplyId());
-			pstmt.setInt(5, dto.getBoardReplyId());
-			pstmt.setInt(6, dto.getBoardReplyId());
+			pstmt.setInt(4, dto.getBoardReplyId()); // BOARD_REPLY_LEVEL+1
+			pstmt.setInt(5, dto.getBoardReplyId()); // BOARD_REPLY_REF
+			pstmt.setInt(6, dto.getBoardReplyId()); // BOARD_REPLY_STEP+1
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -261,10 +262,10 @@ public class BoardDao {
 		return result;
 	}
 	
-	// update - reply Step
+	// 대댓글 달때 step 하나씩 올려줌 update - reply Step
 	public int updateReplyStep(Connection conn, Integer boardReplyId) {
 		int result = -1;  // 0~n 정상이므로 비정상인경우-1
-		String sql = "UPDATE BOARD_REPLY SET BOARD_REPLY_STEP = BOARD_REPLY_STEP+1  WHERE "
+		String sql = "UPDATE BOARD_REPLY SET BOARD_REPLY_STEP = BOARD_REPLY_STEP+1  WHERE "  //지금 단 댓글이 아니라면 같은 보드 아이디에 단 댓글은 다 step을 하나씩 올림
 				+ "            BOARD_REPLY_REF = ( SELECT BOARD_REPLY_REF FROM BOARD_REPLY WHERE BOARD_REPLY_ID = ?)"
 				+ "            AND "
 				+ "            BOARD_REPLY_STEP > ( SELECT BOARD_REPLY_STEP FROM BOARD_REPLY WHERE BOARD_REPLY_ID = ? )";
@@ -281,7 +282,7 @@ public class BoardDao {
 		close(pstmt);
 		return result;
 	}
-	// update - readCount
+	// 조회수 증가 update - readCount
 	public int updateReadCount(Connection conn, Integer boardId) {
 		int result = 0;
 		String sql = "update board set read_count=read_count+1 where board_id=?";  //TODO
