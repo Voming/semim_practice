@@ -13,21 +13,22 @@ public class BoardReadDto {
 	private Integer boardId;
 	private String subject;
 	private String content;
-	private String writeTime;  // TIMESTAMP
+	private String writeTime; // TIMESTAMP
 	private String logIp;
 	private String boardWriter;
 	private Integer readCount;
-	private List<BoardReplyListDto> replydtolist;
-	
+//	private List<BoardReplyListDto> replydtolist; ajax로 대체
+	private List<FileReadDto> filedtolist;
 
 	@Override
 	public String toString() {
 		return "BoardReadDto [boardId=" + boardId + ", subject=" + subject + ", content=" + content + ", writeTime="
 				+ writeTime + ", logIp=" + logIp + ", boardWriter=" + boardWriter + ", readCount=" + readCount
-				+ ", replydtolist=" + replydtolist + "]";
+				+ ", filedtolist=" + filedtolist + "]";
 	}
-	public BoardReadDto(Integer boardId, String subject, String content, String writeTime, String logIp, String boardWriter,
-			Integer readCount) {
+
+	public BoardReadDto(Integer boardId, String subject, String content, String writeTime, String logIp,
+			String boardWriter, Integer readCount) {
 		super();
 		this.boardId = boardId;
 		this.subject = subject;
@@ -40,33 +41,47 @@ public class BoardReadDto {
 		this.boardWriter = boardWriter;
 		this.readCount = readCount;
 	}
+
 	public Integer getBoardId() {
 		return boardId;
 	}
+
 	public String getSubject() {
 		return subject;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public String getWriteTime() {
 		return writeTime;
 	}
+
 	public String getLogIp() {
 		return logIp;
 	}
+
 	public String getBoardWriter() {
 		return boardWriter;
 	}
+
 	public Integer getReadCount() {
 		return readCount;
 	}
-	public List<BoardReplyListDto> getReplydtolist() {
-		return replydtolist;
+//	public List<BoardReplyListDto> getReplydtolist() {
+//		return replydtolist;
+//	}
+//	public void setReplydtolist(List<BoardReplyListDto> replydtolist) {
+//		this.replydtolist = replydtolist;
+//	}
+
+	public List<FileReadDto> getFiledtolist() {
+		return filedtolist;
 	}
-	public void setReplydtolist(List<BoardReplyListDto> replydtolist) {
-		this.replydtolist = replydtolist;
+
+	public void setFiledtolist(List<FileReadDto> filedtolist) {
+		this.filedtolist = filedtolist;
 	}
-	
-	
+
 }

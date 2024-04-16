@@ -15,8 +15,41 @@ import kh.mclass.semim.board.model.dto.BoardListDto;
 import kh.mclass.semim.board.model.dto.BoardReadDto;
 import kh.mclass.semim.board.model.dto.BoardReplyListDto;
 import kh.mclass.semim.board.model.dto.BoardReplyWriteDto;
+import kh.mclass.semim.board.model.dto.FileReadDto;
+import kh.mclass.semim.board.model.dto.FileWriteDto;
 
 public class BoardDao {
+	
+	public List<FileReadDto> selectFileList(Connection conn, Integer boardId) {
+		List<FileReadDto> result = null;
+//		(BOARD_ID, BOARD_FILE_ID, SAVED_FILE_PATH_NAME, ORIGINAL_FILENAME)
+		String sql = "SELECT BOARD_ID, BOARD_FILE_ID, SAVED_FILE_PATH_NAME, ORIGINAL_FILENAME   FROM BOARD_FILE WHERE BOARD_ID=?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			// ? 처리
+			pstmt.setInt(1, boardId);
+			rs = pstmt.executeQuery();
+			// ResetSet처리
+			if(rs.next()) {
+				result = new ArrayList<FileReadDto>();
+				do {
+					FileReadDto dto = new FileReadDto(	
+							rs.getInt("BOARD_ID"),rs.getInt("BOARD_FILE_ID"),
+							rs.getString("SAVED_FILE_PATH_NAME"),rs.getString("ORIGINAL_FILENAME")
+							);
+					result.add(dto);
+				}while (rs.next());
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		close(rs);
+		close(pstmt);
+		return result;
+	}
+	
 	
 	// 댓글 리스트 전채 가져오기(id구분) select list - board reply : board_id 
 	public List<BoardReplyListDto> selectBoardReplyList(Connection conn, Integer boardId) {
@@ -239,26 +272,47 @@ public class BoardDao {
 	
 	
 	// insert
-	public int insert(Connection conn, BoardInsertDto dto, int sequencNum) {
+	public int insert(Connection conn, BoardInsertDto dto) {  //파일과 함께 게시글 추가
+		System.out.println("boardDao insert() param : "+dto);
 		int result = 0;
 //		INSERT INTO BOARD VALUES (SEQ_BOARD_ID.nextval, '제목1', '내용1', default, '127.0.0.1', 'kh1', default);
-		String sql = "INSERT INTO BOARD (BOARD_ID,SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT)"
-				+ " VALUES (?, ?, ?, default, ?, ?, default)";
+//		String sql = "INSERT INTO BOARD (BOARD_ID,SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT)"
+//				+ " VALUES (SEQ_BOARD_ID.nextval, ?, ?, default, ?, ?, default)";
+		String sql = "INSERT ALL ";   //만약 파일이 없는 채로 왔다면 여기만 실행
+		sql+="	INTO BOARD (BOARD_ID,SUBJECT,CONTENT,WRITE_TIME,LOG_IP,BOARD_WRITER,READ_COUNT) ";
+		sql+="		VALUES (SEQ_BOARD_ID.nextval, ?, ?, default, ?, ?, default) ";
+		
+		if(dto.getFileList()!= null && dto.getFileList().size()>0) {  //파일이 있다면 보드 파일 테이블에도 값 넣어줌
+			for(FileWriteDto filedto :dto.getFileList()) {
+		sql+="	INTO BOARD_FILE (BOARD_ID, BOARD_FILE_ID, SAVED_FILE_PATH_NAME, ORIGINAL_FILENAME) ";
+		sql+="		VALUES (SEQ_BOARD_ID.nextval, ?, ?, ?) ";
+			}
+		}
+		sql+="	SELECT * FROM DUAL ";  //조인결과
+		System.out.println("sql: "+ sql);
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);  //전체sql 실행
 			// ? 처리
-			pstmt.setInt(1, sequencNum);
-			pstmt.setString(2, dto.getSubject());
-			pstmt.setString(3, dto.getContent());
-//			pstmt.setString(4, dto.getLogIp());
-			pstmt.setString(4, null);
-			pstmt.setString(5, dto.getBoardWriter());
+			int i = 1;
+			pstmt.setString(i++, dto.getSubject());   // 숫자 일일이 넣어주지 않는 방법 i++
+			pstmt.setString(i++, dto.getContent());
+			pstmt.setString(i++, null); //TODO	pstmt.setString(3, dto.getLogIp());
+			pstmt.setString(i++, dto.getBoardWriter());
+			if(dto.getFileList()!= null && dto.getFileList().size()>0) {  //파일 넣었는지 한번더 체크해서 ?값 넣기
+				int fileId = 1;  
+				for(FileWriteDto filedto :dto.getFileList()) { //그런데 넣은 파일 수만큼 반복문 돌면서
+					pstmt.setInt(i++, fileId++);
+					pstmt.setString(i++, filedto.getFilePath());
+					pstmt.setString(i++, filedto.getOriginalFileName());
+				}
+			}
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		close(pstmt);
+		System.out.println("boardDao insert() return : "+result);
 		return result;
 	}
 	

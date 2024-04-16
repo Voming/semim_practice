@@ -9,61 +9,53 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <jsp:include page="/WEB-INF/views/common/common_function.jsp" />
 <style>
-.boardreply.grid {
-	display: grid;
+.boardreply.grid{
+	display:grid;
 	grid-template-columns: 1fr 5fr 2fr 1fr 1fr;
 	max-width: 800px;
 }
-
-.boardreply.grid .rreplycontent.span {
-	grid-column: 1/-1;
-	display: none;
+.boardreply.grid .rreplycontent.span{
+	grid-column : 1/-1;
+	display : none;
 }
-
-.board.grid {
-	display: grid;
+.board.grid{
+	display:grid;
 	grid-template-columns: 1fr;
 	max-width: 800px;
 }
-
-.board.grid>div {
+.board.grid > div{
 	border: 1px solid black;
-	padding: 10px;
+	padding : 10px;
 }
-
-.flex {
+.flex{
 	display: flex;
 	justify-content: space-between;
 }
-
-.flex>div {
+.flex > div{
 	border: 1px solid black;
-	padding: 10px;
+	padding : 10px;
 }
-
-.flex>div:nth-child(1), .flex>div:nth-child(4) {
-	width: 50px;
+.flex > div:nth-child(1), .flex > div:nth-child(4){
+	width:50px;
 	flex-shrink: 0;
 }
-
-.board>.subject {
+.board > .subject{
 	text-align: center;
 	font-weight: 800;
 }
-
-.board>.subject {
+.board > .subject{
 	text-align: center;
 	font-weight: 800;
 }
-
 .board [name=boardReplyContent] {
-	width: 500px;
+	width:500px;
 }
 </style>
 </head>
 <body>
 	<h1>Semim Board Write</h1>
-	<div class="board grid"> <!-- BoardReadDto사용, dto에 담겨있는 기본정보 -->
+	<div class="board grid">
+		<!-- BoardReadDto사용, dto에 담겨있는 기본정보 -->
 		<div class="flex">
 			<div>${dto.boardId }</div>
 			<div>${dto.boardWriter }</div>
@@ -72,6 +64,15 @@
 		</div>
 		<div class="subject">${dto.subject }</div>
 		<div>${dto.content }</div>
+		<c:if test="${not empty dto.filedtolist }">
+			<div>
+				<c:forEach items="${dto.filedtolist }" var="filedto">
+					<div><a href="${pageContext.request.contextPath }/files/${filedto.savedFilePathName}"
+							download="${filedto.orginalFileName }">${filedto.orginalFileName }</a></div>
+				</c:forEach>
+			</div>
+		</c:if>
+
 		<div>
 			<form class="frm-reply">
 				<input type="hidden" name="boardId" value="${dto.boardId }">
@@ -86,8 +87,9 @@
 				</div>
 			</form>
 		</div>
-		<div class="reply-wrap"> <!-- dto에 담겨있는 댓글 정보 -->
-			<c:forEach items="${dto.replydtolist }" var="replydto">
+		<div class="reply-wrap">
+			<!-- dto에 담겨있는 댓글 정보 -->
+			<%-- 	<c:forEach items="${dto.replydtolist }" var="replydto">
 				<form class="frm-rreply">
 					<input type="hidden" name="boardId" value="${dto.boardId }">
 					<input type="hidden" name="boardReplyId"
@@ -110,7 +112,7 @@
 						</div>
 					</div>
 				</form>
-			</c:forEach>
+			</c:forEach> --%>
 		</div>
 	</div>
 	<script>
@@ -119,7 +121,19 @@ function loadedHandler(){
 	//event 등록
 	$(".btn.reply").on("click", btnReplyClickHandler);
 	$(".btn.rreply").on("click", btnRReplyClickHandler);
-	$(".btn.rreplycontent.show").on("click", btnRReplyContentClickHandler);
+	//$(".btn.rreplycontent.show").on("click", btnRReplyContentClickHandler);
+	
+	$.ajax({   //ajax로 디스플레이 먼저하고
+		url: "${pageContext.request.contextPath }/board/reply/read.ajax"
+			,method:"post"    //get을 쓰면 url로 열릴 수 있음
+			,error : ajaxErrorHandler
+			,data:{boardId : "${dto.boardId}"}
+			,dataType:"json"
+			,success: function(result){  //여기서 success가 들어오면 보여줌
+				console.log(result);
+				displayReplyWrap(result); 
+			}
+	});
 }
 function btnRReplyClickHandler(){
 	//Login 페이지로 이동
@@ -187,6 +201,31 @@ function btnReplyClickHandler(){
 		} 
 	});
 }
+
+
+function btnRReplyContentClickHandler(){
+/*
+	$(".btn.rreplycontent.show").each(function(){
+		if($(this).text() == "취소"){
+			$(this).text("ㄷㄷ글");
+		}
+	});
+ */	
+	if($(this).text() == "ㄷㄷ글"){
+		$(this).text("취소");	
+	}else {
+		$(this).text("ㄷㄷ글");
+	}
+	//$(".boardreply.grid .rreplycontent.span").show();
+	//$(this).parent().next().show();
+	$(this).parent().next().toggle();
+	/* <div class="rreplycontent span">
+	<input type="text" name="boardReplyContent">
+	<button type="button" class="btn rreply">등록</button>
+	</div> 이 내용이 토글로 나옴*/ 
+}
+
+
 function displayReplyWrap(datalist){
 	console.log("${dto.boardId }");
 	var htmlVal = '';
@@ -215,29 +254,6 @@ function displayReplyWrap(datalist){
 	// event 다시 등록
 	$(".btn.rreplycontent.show").on("click", btnRReplyContentClickHandler);
 	$(".btn.rreply").on("click", btnRReplyClickHandler);
-}
-
-
-function btnRReplyContentClickHandler(){
-/*
-	$(".btn.rreplycontent.show").each(function(){
-		if($(this).text() == "취소"){
-			$(this).text("ㄷㄷ글");
-		}
-	});
- */	
-	if($(this).text() == "ㄷㄷ글"){
-		$(this).text("취소");	
-	}else {
-		$(this).text("ㄷㄷ글");
-	}
-	//$(".boardreply.grid .rreplycontent.span").show();
-	//$(this).parent().next().show();
-	$(this).parent().next().toggle();
-	/* <div class="rreplycontent span">
-	<input type="text" name="boardReplyContent">
-	<button type="button" class="btn rreply">등록</button>
-	</div> 이 내용이 토글로 나옴*/ 
 }
 </script>
 </html>

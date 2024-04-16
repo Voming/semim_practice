@@ -32,12 +32,12 @@ public class BoardReadController extends HttpServlet {
 		
 		try {
 			int boardId = Integer.parseInt(boardIdStr);
-			request.setAttribute("dto", service.selectOne(boardId));  //boardId 하나를 가져와서 기본 정보와, 있는 댓글들 모두 dto에 담아서 전달
+			request.setAttribute("dto", service.selectOne(boardId));  //boardId 하나를 가져와서 기본 정보와, //있는 댓글들 모두 dto에 담아서 전달
 			System.out.println(boardId);
 			request.getRequestDispatcher("/WEB-INF/views/board/read.jsp").forward(request, response);
 		}catch(NumberFormatException e) {
-			System.out.println("!!! NumberFormatException !!!!!!");
-			response.sendRedirect(request.getContextPath()+"board/list");
+			System.out.println("!!! NumberFormatException ~~~~~~!");
+			response.sendRedirect(request.getContextPath()+"/board/list");
 		}
 	}
 

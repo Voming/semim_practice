@@ -19,7 +19,8 @@
 			<label>내용</label>
 			<textarea name="content">여기</textarea>
 		</div>
-		<button type="button" class="btn write">글쓰기</button>
+		<div><button type="button" class="btn file">파일추가</button></div>
+		<div><button type="button" class="btn write">글쓰기</button></div>
 	</form>
 
 	<script>
@@ -27,6 +28,22 @@
 
 		function loadedHandler() {
 			$(".btn.write").on("click", btnWriteClickHandler);
+			$(".btn.file").on("click", btnFileClickHandler);
+		}
+		
+		function btnFileClickHandler(){
+			var htmlVal = `<div><input type="file" name="uploadfiles" required></div>
+				<div><button type="button" class="btn file-cancle">취소</button></div>`	;
+			$(this).parent().after(htmlVal);
+			//js 중요! Event 등록 시 중복 등록 됨을 방지함
+			$(".btn.file-cancle").off("click");
+			$(".btn.file-cancle").on("click", btnFileCancleClickHandler);
+		}
+		
+		function btnFileCancleClickHandler(){
+			console.log("btnFileCancleClickHandler");
+			//중요
+			$(this).parent().remove();
 		}
 
 		function btnWriteClickHandler() {
@@ -56,6 +73,7 @@
 			var frm = document.getElementById("frm-write");
 			frm.method = "post"; //content길이가 길 예정 한글 3, 영문자 1 바이트
 			frm.action = "${pageContext.request.contextPath}/board/write";
+			frm.enctype = "multipart/form-data";   //form 태그 내부에 input type="file"이 있다면 
 			frm.submit(); //값을 보내야 controller에서 인식함
 		}
 	</script>
