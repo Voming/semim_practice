@@ -27,8 +27,9 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement(sql);
-			// ? 처리
+			/*
+			 * // pstmt = conn.prepareStatement(sql);
+			 */			// ? 처리
 			pstmt.setInt(1, boardId);
 			rs = pstmt.executeQuery();
 			// ResetSet처리

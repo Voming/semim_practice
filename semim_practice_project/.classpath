@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -19,5 +20,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jackson-dataformat-xml-2.15.2.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jackson-databind-2.15.2.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/cos-2022.2.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/mybatis-3.5.15.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

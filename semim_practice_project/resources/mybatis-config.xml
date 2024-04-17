@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="db.properties"/>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	<typeAliases>
+		<typeAlias type="kh.mclass.semim.board.model.controller.dto.BoardListDto.java" alias="BoardListDto"/>
+		<typeAlias type="kh.mclass.semim.board.model.controller.dto.BoardReadDto.java" alias="BoardReadDto"/>
+		<typeAlias type="kh.mclass.semim.board.model.controller.dto.BoardReplyDto.java" alias="BoardReplyDto"/>
+		<typeAlias type="kh.mclass.semim.board.model.controller.dto.BoardInsertDto.java" alias="BoardInsertDto"/>
+	</typeAliases>
+	<environments default="development1">
+		<environment id="development1">
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.semim.localhost.url}" />
+				<property name="username" value="${jdbc.semim.username}" />
+				<property name="password" value="${jdbc.semim.password}" />
+			</dataSource>
+		</environment>
+		<environment id="development2">
+		<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.semim.dbserver.url}" />
+				<property name="username" value="${jdbc.semim.username}" />
+				<property name="password" value="${jdbc.semim.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="mappers/board-mapper.xml"/>
+		<!-- xxx-mapper.xml  생성 후 추가-->
+		
+	</mappers>
+
+</configuration>
